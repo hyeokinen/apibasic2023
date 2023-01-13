@@ -1,16 +1,23 @@
-package com.example.apibasic.post.api;
-
-import com.example.apibasic.post.repository.PostRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-
 // 요청 오면 잘 받고 응답 잘해라 라는 기능
 // 홀서빙
 // PostRepository에게 의존하는 관계
+package com.example.apibasic.post.api;
 
+import com.example.apibasic.post.dto.PostCreateDTO;
+import com.example.apibasic.post.dto.PostResponseDTO;
+import com.example.apibasic.post.entity.PostEntity;
+import com.example.apibasic.post.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 // 리소스 : 게시물 (Post)
 /*
@@ -40,21 +47,44 @@ public class PostApiController {
     public ResponseEntity<?> list() {
         log.info("/posts GET request");
         List<PostEntity> list = postRepository.findAll();
-        return null;
+
+        // 엔터티 리스트를 DTO리스트로 변환해서 클라이언트에 응답
+        List<PostResponseDTO> responseDTOList = list.stream()
+                .map(PostResponseDTO::new)
+                .collect(toList());
+
+        return ResponseEntity
+                .ok()
+                .body(responseDTOList)
+                ;
     }
 
     // 게시물 개별 조회
     @GetMapping("/{postNo}")
     public ResponseEntity<?> detail(@PathVariable Long postNo) {
         log.info("/posts/{} GET request", postNo);
-        return null;
+
+        PostEntity post = postRepository.findOne(postNo);
+        return ResponseEntity
+                .ok()
+                .body(post)
+                ;
     }
 
     // 게시물 등록
     @PostMapping
-    public ResponseEntity<?> create() {
+    public ResponseEntity<?> create(@RequestBody PostCreateDTO createDTO) {
         log.info("/posts POST request");
-        return null;
+        log.info("게시물 정보: {}", createDTO);
+
+        // dto를 entity변환 작업
+        PostEntity entity = createDTO.toEntity();
+
+        boolean flag = postRepository.save(entity);
+        return flag
+                ? ResponseEntity.ok().body("INSERT-SUCCESS")
+                : ResponseEntity.badRequest().body("INSERT-FAIL")
+                ;
     }
 
     // 게시물 수정

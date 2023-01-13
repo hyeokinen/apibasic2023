@@ -1,9 +1,14 @@
+
 package com.example.apibasic.post.repository;
 
 import com.example.apibasic.post.entity.PostEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
+
 
 // 실제로 데이터를 건드리는 역할
 // 주방장
@@ -16,14 +21,10 @@ public class PostRepository {
 
     // 게시물 목록 조회
     public List<PostEntity> findAll() {
-        List<PostEntity> postEntityList = new ArrayList<>();
 
-        Set<Long> keySet = posts.keySet();
-        for (Long postNo : keySet) {
-            PostEntity postEntity = posts.get(postNo);
-            postEntityList.add(postEntity);
-        }
-        return postEntityList;
+        return posts.keySet().stream()
+                .map(posts::get)
+                .collect(toList());
     }
 
     // 게시물 개별 조회
@@ -34,7 +35,7 @@ public class PostRepository {
     // 게시물 등록, 수정
     public boolean save(PostEntity postEntity) {
         PostEntity post = posts.put(postEntity.getPostNo(), postEntity);
-        return post != null;
+        return true;
     }
 
     // 게시물 삭제
@@ -44,8 +45,3 @@ public class PostRepository {
     }
 
 }
-
-
-
-
-
