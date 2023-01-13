@@ -1,4 +1,3 @@
-
 package com.example.apibasic.post.repository;
 
 import com.example.apibasic.post.entity.PostEntity;
@@ -6,10 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
-
+import static java.util.stream.Collectors.*;
 // 실제로 데이터를 건드리는 역할
 // 주방장
 // 게시물 데이터를 CRUD(생성, 조회, 수정, 삭제)
