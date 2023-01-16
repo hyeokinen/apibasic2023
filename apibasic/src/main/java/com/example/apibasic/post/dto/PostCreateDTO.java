@@ -1,6 +1,8 @@
 package com.example.apibasic.post.dto;
 
 import com.example.apibasic.post.entity.PostEntity;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.*;
 
 import javax.validation.constraints.Max;
@@ -24,6 +26,7 @@ public class PostCreateDTO {
      */
     @NotBlank
     @Size(min = 2, max = 5) // 글자수는 2~5자 사이
+
     private String writer;
     @NotBlank
     @Min(1) @Max(20)

@@ -1,6 +1,5 @@
-# server.port=8181 # properties ??
 
-# yml ??
+# server.port=8181  # properties
 server:
   port: 8181
 
@@ -12,11 +11,15 @@ logging:
         apibasic:
           req: trace
 
-#spring.datasource.url=
-#spring.datasource.username=
-#spring.datasource.password=
-spring:
-  datasource:
-    url: xxx
-    username: xxx
-    password: xxx
+springdoc:
+  swagger-ui:
+    path: /myapi.html
+
+#spring.datasource.url=xxx
+#spring.datasource.username=xxx
+#spring.datasource.password=xxx
+#spring:
+#  datasource:
+#    url: xxx
+#    username: xxx
+#    password: xxx
