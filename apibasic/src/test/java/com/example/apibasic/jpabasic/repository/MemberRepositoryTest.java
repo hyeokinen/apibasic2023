@@ -28,7 +28,7 @@ class MemberRepositoryTest {
 
     // @BeforeEach - 각 테스트를 실행하기 전에 실행되는 내용
     @BeforeEach
-    void bulkInsert(){
+    void bulkInsert() {
 
     }
 
@@ -38,7 +38,8 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("회원의 가입 정보를 데이터베이스에 저장해야 한다.")
     @Transactional
-    @Rollback  // 테스트가 끝나면 롤백해라
+    @Rollback
+    // 테스트가 끝나면 롤백해라
     void saveTest() {
         // given - when - then 패턴
         // given : 테스트시 주어지는 데이터
@@ -114,15 +115,44 @@ class MemberRepositoryTest {
     @DisplayName("회원 데이터를 3개 등록하고 그 중 하나의 회원을 삭제해야 한다.")
     @Transactional
     @Rollback
-    void deleteTest(){
+    void deleteTest() {
         // given
-
+        Long userCode = 2L;
         // when
-
+        memberRepository.deleteById(userCode);
+        Optional<MemberEntity> foundMember = memberRepository.findById(userCode);
 
         // then
+        assertFalse(foundMember.isPresent());
+        assertEquals(2, memberRepository.findAll().size());
+
     }
 
+    @Test
+    @DisplayName("2번 회원의 닉네임과 성별을 수정해야 한다.")
+//    @Transactional
+//    @Rollback
+    void modifyTest() {
+        // given
+        Long userCode = 2L;
+        String newNickName = "닭강정";
+        Gender newGender = FEMALE;
 
+        // when
+        // JPA에서 수정은 조회 후 setter로 변경 후 다시 save
+        Optional<MemberEntity> foundMember = memberRepository.findById(userCode);
 
+        foundMember.ifPresent(m -> {
+            m.setNickName(newNickName);
+            m.setGender(newGender);
+            memberRepository.save(m);
+        });
+
+        Optional<MemberEntity> modifiedMember = memberRepository.findById(userCode);
+
+        // then
+        assertEquals("닭강정", modifiedMember.get().getNickName());
+        assertEquals(FEMALE, modifiedMember.get().getGender());
+
+    }
 }
