@@ -1,16 +1,14 @@
 package com.example.apibasic.post.repository;
 
 import com.example.apibasic.post.dto.PageRequestDTO;
+import com.example.apibasic.post.dto.PageResponseDTO;
 import com.example.apibasic.post.entity.PostEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.List;
 
@@ -42,7 +40,7 @@ class PageTest {
                 .build();
 
         // 페이지 정보 생성
-        PageRequest pageInfo = PageRequest.of(
+        Pageable pageInfo = PageRequest.of(
                 dto.getPage() - 1,
                 dto.getSizePerPage(),
                 Sort.Direction.DESC,  // 내림차 정렬
@@ -73,7 +71,7 @@ class PageTest {
         //given
         String title = "3";
         PageRequest pageRequest = PageRequest.of(
-                0,
+                3,
                 10,
                 Sort.Direction.DESC,
                 "createDate");
@@ -90,6 +88,12 @@ class PageTest {
 
 
         contents.forEach(System.out::println);
+
+        // 페이지 정보
+        PageResponseDTO<PostEntity> dto
+                = new PageResponseDTO<PostEntity>((Page<PostEntity>) postEntityPage);
+
+        System.out.println("dto = " + dto);
     }
 }
 
