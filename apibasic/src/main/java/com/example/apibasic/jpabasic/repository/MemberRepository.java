@@ -2,8 +2,11 @@ package com.example.apibasic.jpabasic.repository;
 
 import com.example.apibasic.jpabasic.entity.Gender;
 import com.example.apibasic.jpabasic.entity.MemberEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -26,15 +29,21 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // 계정명으로 회원 조회
 //    @Query("select m from MemberEntity as m where m.account=?1")
     @Query("select m from MemberEntity as m where m.account=:acc")
-    MemberEntity getMemberByAccount(String acc);
+    MemberEntity getMemberByAccount(@Param("acc") String acc);
 
     // 닉네임과 성별 동시만족 조건으로 회원 조회
 //    @Query("select m from MemberEntity m where m.nickName=?1 and m.gender=?2")
     @Query("select m from MemberEntity m where m.nickName=:nick and m.gender=:gen")
-    List<MemberEntity> getMembersByNickAndGender(String nick, Gender gen);
+    List<MemberEntity> getMembersByNickAndGender(@Param("nick") String nick,@Param("gen") Gender gen);
 
     @Query("select m from MemberEntity m where m.nickName like %:nick%")
-    List<MemberEntity> getMembersByNickName(String nick);
+    List<MemberEntity> getMembersByNickName(@Param("nick") String nick);
+
+
+    @Modifying // 수정, 삭제할 때 붙이기
+    @Query("delete from MemberEntity m where m.nickName=:nick")
+    void deleteByNickName(@Param("nick") String nick);
+
 
 
 }
