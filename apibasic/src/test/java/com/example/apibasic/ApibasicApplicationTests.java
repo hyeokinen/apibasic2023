@@ -8,16 +8,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @SpringBootTest
 class ApibasicApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+
 	@Test
-	void dbConnectTest(){
+	void dbConnectTest() {
 		String sql = "SELECT NOW() AS now FROM dual";
-		String now =jdbcTemplate.queryForObject(sql, String.class);
+		String now = jdbcTemplate.queryForObject(sql, String.class);
 
 		System.out.println("now = " + now);
 	}
