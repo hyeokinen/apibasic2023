@@ -20,7 +20,7 @@ class PageTest {
 
     @BeforeEach
     void bulkInsert() {
-        for (int i = 1; i <= 500; i++) {
+        for (int i = 1; i <= 433; i++) {
             PostEntity post = PostEntity.builder()
                     .title("안녕~~" + i)
                     .writer("김말종" + i)
