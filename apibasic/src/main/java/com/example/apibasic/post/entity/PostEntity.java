@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // 게시물의 데이터 자바빈즈
 @Setter @Getter @ToString
@@ -31,7 +33,8 @@ public class PostEntity {
     private String title; // 제목
     private String content; // 내용
 
-//    private List<String> hashTags; // 해시태그 목록
+    @OneToMany(mappedBy = "post")
+    private List<HashTagEntity> hashTags = new ArrayList<>(); // 해시태그 목록
 
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 
